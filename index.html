@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Blockly Fan Control Checker with Fixed-Size Dialog</title>
+    <!-- Include the Blockly library from a CDN -->
+    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
+    <style>
+      /* Basic page styling */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      /* Position the Run button at the top left */
+      #runButton {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+        padding: 8px 16px;
+        font-size: 16px;
+      }
+      /* Define the Blockly workspace size */
+      #blocklyDiv {
+        position: absolute;
+        top: 50px;  /* leave room for the button */
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      /* Styling for the custom result dialog */
+      #resultDialog {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;       /* Fixed width */
+        height: 200px;      /* Fixed height */
+        background: #fff;
+        border: 2px solid #ccc;
+        padding: 20px;
+        /* Hidden by default */
+        display: none;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        font-family: sans-serif;
+        z-index: 2000;
+        text-align: center;
+        /* Flexbox properties for centering content */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #resultDialog .icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+      }
+      #resultDialog .msg {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      #resultDialog button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Run button -->
+    <button id="runButton">Run</button>
+    <!-- Blockly workspace -->
+    <div id="blocklyDiv"></div>
+    <!-- Custom result dialog with OK button (hidden by default) -->
+    <div id="resultDialog">
+      <div class="icon"></div>
+      <div class="msg"></div>
+      <button id="okButton">OK</button>
+    </div>
+
+    <!-- Define the Blockly toolbox XML -->
+    <xml id="toolbox" style="display: none">
+      <!-- Standard if block (if-then) -->
+      <block type="controls_if"></block>
+      <!-- Custom condition blocks -->
+      <block type="condition_i_am_cold"></block>
+      <block type="condition_i_am_hot"></block>
+      <!-- Custom action block -->
+      <block type="action_turn_on_fan"></block>
+    </xml>
+
+    <script>
+      // --- Define Custom Blocks ---
+
+      // "i am cold" condition block.
+      Blockly.Blocks['condition_i_am_cold'] = {
+        init: function() {
+          this.appendDummyInput().appendField("i am cold");
+          this.setOutput(true, "Boolean");
+          this.setColour(210);
+          this.setTooltip("Returns true if you are cold.");
+          this.setHelpUrl("");
+        }
+      };
+
+      // "i am hot" condition block.
+      Blockly.Blocks['condition_i_am_hot'] = {
+        init: function() {
+          this.appendDummyInput().appendField("i am hot");
+          this.setOutput(true, "Boolean");
+          this.setColour(210);
+          this.setTooltip("Returns true if you are hot.");
+          this.setHelpUrl("");
+        }
+      };
+
+      // "turn on the fan" action block.
+      Blockly.Blocks['action_turn_on_fan'] = {
+        init: function() {
+          this.appendDummyInput().appendField("turn on the fan");
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(120);
+          this.setTooltip("Executes the action to turn on the fan.");
+          this.setHelpUrl("");
+        }
+      };
+
+      // --- (Optional) Define JavaScript Generators for the Blocks ---
+      Blockly.JavaScript['condition_i_am_cold'] = function(block) {
+        var code = 'iAmCold()';
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['condition_i_am_hot'] = function(block) {
+        var code = 'iAmHot()';
+        return [code, Blockly.JavaScript.ORDER_NONE];
+      };
+
+      Blockly.JavaScript['action_turn_on_fan'] = function(block) {
+        var code = 'turnOnFan();\n';
+        return code;
+      };
+
+      // --- Inject Blockly into the page ---
+      var workspace = Blockly.inject('blocklyDiv', {
+        toolbox: document.getElementById('toolbox')
+      });
+
+      // Function to display the result in the custom dialog.
+      // If type is "correct", a green tick is shown; otherwise, a red cross.
+      function showResult(message, type) {
+        var dialog = document.getElementById("resultDialog");
+        var iconDiv = dialog.querySelector(".icon");
+        var msgDiv = dialog.querySelector(".msg");
+
+        if (type === "correct") {
+          iconDiv.innerHTML = "&#x2714;";  // Unicode check mark.
+          iconDiv.style.color = "green";
+        } else {
+          iconDiv.innerHTML = "&#x2716;";  // Unicode heavy ballot X.
+          iconDiv.style.color = "red";
+        }
+        msgDiv.textContent = message;
+
+        // Show the dialog only when the Run button is pressed.
+        dialog.style.display = "flex";
+      }
+
+      // Dismiss the dialog when the OK button is clicked.
+      document.getElementById("okButton").addEventListener("click", function() {
+        document.getElementById("resultDialog").style.display = "none";
+      });
+
+      // --- Check the user's block configuration ---
+      function checkBlocks() {
+        // Get all top-level blocks in the workspace.
+        var topBlocks = workspace.getTopBlocks(true);
+        // There must be exactly one top-level block.
+        if (topBlocks.length !== 1) {
+          showResult("Not quite, try again!", "incorrect");
+          return;
+        }
+        var block = topBlocks[0];
+        // The top block must be an if block.
+        if (block.type !== 'controls_if') {
+          showResult("Not quite, try again!", "incorrect");
+          return;
+        }
+        // Check the condition input ("IF0") of the if block.
+        var conditionBlock = block.getInputTargetBlock("IF0");
+        if (!conditionBlock || conditionBlock.type !== "condition_i_am_hot") {
+          showResult("Not quite, try again!", "incorrect");
+          return;
+        }
+        // Check the statement (then) input ("DO0") of the if block.
+        var actionBlock = block.getInputTargetBlock("DO0");
+        if (!actionBlock || actionBlock.type !== "action_turn_on_fan") {
+          showResult("Not quite, try again!", "incorrect");
+          return;
+        }
+        // Ensure that no extra blocks are attached.
+        if (block.getNextBlock() || actionBlock.getNextBlock()) {
+          showResult("Not quite, try again!", "incorrect");
+          return;
+        }
+        // All checks passed.
+        showResult("Correct", "correct");
+      }
+
+      // Attach the checkBlocks function to the Run button.
+      document.getElementById("runButton").addEventListener("click", checkBlocks);
+    </script>
+  </body>
+</html>
