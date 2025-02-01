@@ -2,12 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Blockly Fan Control Checker with Centered Dialog in Workspace</title>
+    <title>Score Checker with Data-Driven Blockly</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Include the Blockly library from a CDN -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
-    <!-- Our main script loads after the DOM is ready -->
+    <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
+    
+    <!-- Main script -->
     <script src="script.js" defer></script>
+    <script src="evaluators.js" defer></script>
   </head>
   <body>
     <!-- Run button -->
@@ -27,15 +30,17 @@
       </div>
     </div>
 
-    <!-- Define the Blockly toolbox XML -->
+    <!-- Toolbox XML with our custom blocks -->
     <xml id="toolbox" style="display: none">
-      <!-- Standard if block (if-then) -->
+      <!-- Use the built-in if block -->
       <block type="controls_if"></block>
       <!-- Custom condition blocks -->
-      <block type="condition_i_am_cold"></block>
-      <block type="condition_i_am_hot"></block>
-      <!-- Custom action block -->
-      <block type="action_turn_on_fan"></block>
+      <block type="condition_my_score"></block>
+      <block type="condition_your_score"></block>
+      <!-- Custom action blocks -->
+      <block type="action_say_i_won"></block>
+      <block type="action_say_you_won"></block>
+      <block type="action_say_draw"></block>
     </xml>
   </body>
 </html>

@@ -1,0 +1,95 @@
+{
+    "blocks": [
+      {
+        "type": "condition_my_score",
+        "message0": "My score is higher",
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Returns true if my score is higher.",
+        "helpUrl": ""
+      },
+      {
+        "type": "condition_your_score",
+        "message0": "Your score is higher",
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Returns true if your score is higher.",
+        "helpUrl": ""
+      },
+      {
+        "type": "action_say_i_won",
+        "message0": "say \"I won!\"",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Says I won.",
+        "helpUrl": ""
+      },
+      {
+        "type": "action_say_you_won",
+        "message0": "say \"You won!\"",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Says you won.",
+        "helpUrl": ""
+      },
+      {
+        "type": "action_say_draw",
+        "message0": "say \"It's a draw!\"",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Says it's a draw.",
+        "helpUrl": ""
+      }
+    ],
+    "checks": [
+      {
+        "pattern": {
+          "type": "controls_if",
+          "inputs": {
+            "IF0": "condition_my_score",
+            "DO0": "action_say_i_won",
+            "IF1": "condition_your_score",
+            "DO1": "action_say_you_won",
+            "ELSE": "action_say_draw"
+          }
+        },
+        "result": {
+          "message": "Correct",
+          "type": "correct"
+        }
+      }
+    ],
+    "generators": [
+      {
+        "type": "condition_my_score",
+        "code": "test(input, 0)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "condition_your_score",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "action_say_i_won",
+        "code": "result = action(0);\n",
+        "isExpression": false
+      },
+      {
+        "type": "action_say_you_won",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      },
+      {
+        "type": "action_say_draw",
+        "code": "result = action(2);\n",
+        "isExpression": false
+      }
+    ]
+  }
+  
