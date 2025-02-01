@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Blockly Fan Control Checker with Fixed-Size Dialog</title>
+    <title>Blockly Fan Control Checker with Centered Dialog in Workspace</title>
     <!-- Include the Blockly library from a CDN -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <style>
@@ -21,62 +21,87 @@
         padding: 8px 16px;
         font-size: 16px;
       }
-      /* Define the Blockly workspace size */
+      /* Container for the workspace and dialog */
+      #workspaceContainer {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        top: 50px; /* leave room for the Run button */
+        left: 10px;
+        border: 1px solid #ccc; /* Optional border for visual clarity */
+      }
+      /* Blockly workspace should fill the container */
       #blocklyDiv {
         position: absolute;
-        top: 50px;  /* leave room for the button */
+        top: 0;
         left: 0;
         right: 0;
         bottom: 0;
       }
-      /* Styling for the custom result dialog */
+      /* Custom dialog centered within the workspace container */
       #resultDialog {
-        position: fixed;
+        position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 400px;       /* Fixed width */
-        height: 200px;      /* Fixed height */
+        width: 300px;       /* Maximum width 300px */
+        height: 100px;      /* Maximum height 100px */
         background: #fff;
         border: 2px solid #ccc;
         padding: 20px;
-        /* Hidden by default */
-        display: none;
+        display: none;      /* Hidden by default */
         box-shadow: 0 0 10px rgba(0,0,0,0.3);
         border-radius: 8px;
         font-family: sans-serif;
         z-index: 2000;
-        text-align: center;
-        /* Flexbox properties for centering content */
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
       }
+      /* Container for the icon and message in the dialog (row layout) */
+      .resultContent {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      /* Icon styling: ensure it stays to the left and is appropriately sized */
       #resultDialog .icon {
-        font-size: 50px;
-        margin-bottom: 10px;
+        font-size: 48px; /* Adjust icon size as needed */
+        flex-shrink: 0;
       }
+      /* Message styling */
       #resultDialog .msg {
-        font-size: 24px;
-        margin-bottom: 20px;
+        font-size: 16px; /* Adjust text size as needed */
+        flex-grow: 1;
+        word-wrap: break-word;
       }
+      /* OK button styling */
       #resultDialog button {
         padding: 10px 20px;
         font-size: 16px;
         cursor: pointer;
+        align-self: center;
       }
     </style>
   </head>
   <body>
     <!-- Run button -->
     <button id="runButton">Run</button>
-    <!-- Blockly workspace -->
-    <div id="blocklyDiv"></div>
-    <!-- Custom result dialog with OK button (hidden by default) -->
-    <div id="resultDialog">
-      <div class="icon"></div>
-      <div class="msg"></div>
-      <button id="okButton">OK</button>
+    <!-- Container for the Blockly workspace and dialog -->
+    <div id="workspaceContainer">
+      <!-- Blockly workspace -->
+      <div id="blocklyDiv"></div>
+      <!-- Custom result dialog with OK button (hidden by default) -->
+      <div id="resultDialog">
+        <!-- Row container: icon on the left and message on the right -->
+        <div class="resultContent">
+          <div class="icon"></div>
+          <div class="msg"></div>
+        </div>
+        <button id="okButton">OK</button>
+      </div>
     </div>
 
     <!-- Define the Blockly toolbox XML -->
@@ -127,7 +152,7 @@
         }
       };
 
-      // --- (Optional) Define JavaScript Generators for the Blocks ---
+      // --- Define JavaScript Generators for the Blocks ---
       Blockly.JavaScript['condition_i_am_cold'] = function(block) {
         var code = 'iAmCold()';
         return [code, Blockly.JavaScript.ORDER_NONE];
@@ -143,13 +168,16 @@
         return code;
       };
 
-      // --- Inject Blockly into the page ---
+      // --- Inject Blockly into the page with trashcan enabled ---
       var workspace = Blockly.inject('blocklyDiv', {
-        toolbox: document.getElementById('toolbox')
+        toolbox: document.getElementById('toolbox'),
+        trashcan: true
       });
 
       // Function to display the result in the custom dialog.
-      // If type is "correct", a green tick is shown; otherwise, a red cross.
+      // If type is "correct", a green tick is shown;
+      // if type is "snowman", a snowman icon is shown;
+      // otherwise, a red cross is shown.
       function showResult(message, type) {
         var dialog = document.getElementById("resultDialog");
         var iconDiv = dialog.querySelector(".icon");
@@ -158,13 +186,16 @@
         if (type === "correct") {
           iconDiv.innerHTML = "&#x2714;";  // Unicode check mark.
           iconDiv.style.color = "green";
+        } else if (type === "snowman") {
+          iconDiv.innerHTML = "&#9731;";  // Unicode snowman.
+          iconDiv.style.color = "blue";
         } else {
           iconDiv.innerHTML = "&#x2716;";  // Unicode heavy ballot X.
           iconDiv.style.color = "red";
         }
         msgDiv.textContent = message;
 
-        // Show the dialog only when the Run button is pressed.
+        // Display the dialog (centered within the workspace container)
         dialog.style.display = "flex";
       }
 
@@ -188,25 +219,26 @@
           showResult("Not quite, try again!", "incorrect");
           return;
         }
-        // Check the condition input ("IF0") of the if block.
+        // Get the condition ("IF0") and the statement ("DO0") blocks.
         var conditionBlock = block.getInputTargetBlock("IF0");
-        if (!conditionBlock || conditionBlock.type !== "condition_i_am_hot") {
-          showResult("Not quite, try again!", "incorrect");
-          return;
-        }
-        // Check the statement (then) input ("DO0") of the if block.
         var actionBlock = block.getInputTargetBlock("DO0");
-        if (!actionBlock || actionBlock.type !== "action_turn_on_fan") {
-          showResult("Not quite, try again!", "incorrect");
-          return;
-        }
+
         // Ensure that no extra blocks are attached.
-        if (block.getNextBlock() || actionBlock.getNextBlock()) {
+        if (block.getNextBlock() || (actionBlock && actionBlock.getNextBlock())) {
           showResult("Not quite, try again!", "incorrect");
           return;
         }
-        // All checks passed.
-        showResult("Correct", "correct");
+
+        // Branch based on the type of condition block.
+        if (conditionBlock && conditionBlock.type === "condition_i_am_hot" && actionBlock && actionBlock.type === "action_turn_on_fan") {
+          // Correct configuration: i am hot.
+          showResult("Correct", "correct");
+        } else if (conditionBlock && conditionBlock.type === "condition_i_am_cold" && actionBlock && actionBlock.type === "action_turn_on_fan") {
+          // Special case: i am cold.
+          showResult("You must be a snowman to want the fan on when you are cold!", "snowman");
+        } else {
+          showResult("Not quite, try again!", "incorrect");
+        }
       }
 
       // Attach the checkBlocks function to the Run button.
