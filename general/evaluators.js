@@ -23,6 +23,12 @@ function constructTests(code) {
 }
 
 function initWorkspace(workspace) {
+    /*
+    const startBlocks = {
+        blocks: {
+            blocks: [
+                {type: "controls_if","id":".X}kzQG}|h94Vlz[4l%K","x":100,"y":100}]}}
+                */
     const startBlocks = {
         blocks: {
           blocks: [
@@ -30,7 +36,11 @@ function initWorkspace(workspace) {
               kind: 'block',
               type: 'controls_if',
               x: 100,
-              y: 100
+              y: 100,
+              extraState : {
+                elseifcount: 1,
+                hasElse: true
+              }
             },
           ],
         },
