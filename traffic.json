@@ -1,0 +1,168 @@
+{
+    "blocks": [
+      {
+        "type": "traffic_red",
+        "message0": "Traffic light is 🔴",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "traffic_green",
+        "message0": "Traffic light is 🟢",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "traffic_yellow",
+        "message0": "Traffic light is 🟡",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "traffic_blue",
+        "message0": "Traffic light is 🔵",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },                  
+      {
+        "type": "speed_up",
+        "message0": "Speed Up",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },
+      {
+        "type": "slow_down",
+        "message0": "Slow Down",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },
+      {
+        "type": "drive_forward",
+        "message0": "Drive forward",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },    
+      {
+        "type": "stop",
+        "message0": "Stop",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      }        
+    ],
+    "generators": [
+      {
+        "type": "traffic_blue",
+        "code": "false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "traffic_red",
+        "code": "test(input, 0)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "traffic_green",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },    
+      {
+        "type": "traffic_yellow",
+        "code": "test(input, 2)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },         
+      {
+        "type": "stop",
+        "code": "result = action(0);\n",
+        "isExpression": false
+      },        
+      {
+        "type": "drive_forward",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      },
+      {
+        "type": "slow_down",
+        "code": "result = action(2);\n",
+        "isExpression": false
+      },      
+      {
+        "type": "speed_up",
+        "code": "result = action(3);\n",
+        "isExpression": false
+      }
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100,
+              "extraState" : {
+                "elseIfCount": 1,
+                "hasElse": true
+              }
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "traffic_red"
+          },
+          {
+            "kind": "block",
+            "type": "traffic_green"
+          },
+          {
+            "kind": "block",
+            "type": "traffic_yellow"
+          },          
+          {
+            "kind": "block",
+            "type": "traffic_blue"
+          },
+          {
+            "kind": "block",
+            "type": "speed_up"
+          },
+          {
+            "kind": "block",
+            "type": "slow_down"
+          },
+          {
+            "kind": "block",
+            "type": "drive_forward"
+          },
+          {
+            "kind": "block",
+            "type": "stop"
+          }          
+        ]
+    }
+  }
+  

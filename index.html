@@ -2,40 +2,74 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Blockly Fan Control Checker with Centered Dialog in Workspace</title>
+    <title>Score Checker with Data-Driven Blockly</title>
     <link rel="stylesheet" href="styles.css?t=1">
     <!-- Include the Blockly library from a CDN -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
-    <!-- Our main script loads after the DOM is ready -->
-    <script src="script.js" defer></script>
+    <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
+    
+    <!-- Main script -->
+    <script src="script.js?t=2" defer></script>
   </head>
   <body>
-    <!-- Run button -->
-    <button id="runButton">Run</button>
-    <!-- Container for the workspace and dialog -->
-    <div id="workspaceContainer">
-      <!-- Blockly workspace -->
-      <div id="blocklyDiv"></div>
-      <!-- Custom result dialog with OK button (hidden by default) -->
-      <div id="resultDialog">
-        <!-- Row container: icon on the left and message on the right -->
-        <div class="resultContent">
-          <div class="icon"></div>
-          <div class="msg"></div>
-        </div>
-        <button id="okButton">OK</button>
-      </div>
-    </div>
+    
+    <div id="blocklySpace">
+        <h2>Check Your Understanding with Blockly</h2>
+        <!-- Container for the workspace and dialog -->
+        <div id="workspaceContainer">
+            <!-- Blockly workspace -->
+            <div id="blocklyDiv"></div>
+            <!-- Custom result dialog with OK button (hidden by default) -->
+            <div id="resultDialog">
+                <!-- Row container: icon on the left and message on the right -->
+                <div class="resultContent">
+                <div class="icon"></div>
+                <div class="msg"></div>
+                </div>
+                <button id="okButton">OK</button>
+            </div>
+        </div>   
+        <button id="runButton">▶ Run</button>
+    </div>   
 
-    <!-- Define the Blockly toolbox XML -->
-    <xml id="toolbox" style="display: none">
-      <!-- Standard if block (if-then) -->
-      <block type="controls_if"></block>
-      <!-- Custom condition blocks -->
-      <block type="condition_i_am_cold"></block>
-      <block type="condition_i_am_hot"></block>
-      <!-- Custom action block -->
-      <block type="action_turn_on_fan"></block>
-    </xml>
   </body>
+  <script>
+    const loadScript = (FILE_URL, async = true, type = "text/javascript") => {
+        return new Promise((resolve, reject) => {
+            try {
+                const scriptEle = document.createElement("script");
+                scriptEle.type = type;
+                scriptEle.async = async;
+                scriptEle.src =FILE_URL;
+
+                scriptEle.addEventListener("load", (ev) => {
+                    resolve({ status: true });
+                });
+
+                scriptEle.addEventListener("error", (ev) => {
+                    reject({
+                        status: false,
+                        message: `Failed to load the script ${FILE_URL}`
+                    });
+                });
+
+                document.body.appendChild(scriptEle);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    var activity = urlParams.get('activity');    
+    if (activity === null) {
+        activity = "1";
+    }
+    loadScript(activity + ".js?t=4")
+        .then( data  => {
+            console.log("Script loaded successfully", data);
+        })
+        .catch( err => {
+            console.error(err);
+        });        
+</script>  
 </html>

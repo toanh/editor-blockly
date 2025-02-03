@@ -1,0 +1,113 @@
+{
+    "blocks": [
+      {
+        "type": "goal_behind",
+        "message0": "goal is behind me",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "on_bench",
+        "message0": "I'm on the bench",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "goal_ahead",
+        "message0": "goal is ahead of me",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },           
+      {
+        "type": "shoot",
+        "message0": "shoot for goal!",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },
+      {
+        "type": "pass",
+        "message0": "pass the ball",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      }      
+    ],
+    "generators": [
+      {
+        "type": "goal_behind",
+        "code": "false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "on_bench",
+        "code": "test(input, 0)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "goal_ahead",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },           
+      {
+        "type": "pass",
+        "code": "result = action(0);\n",
+        "isExpression": false
+      },        
+      {
+        "type": "shoot",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      }
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "shoot"
+          },
+          {
+            "kind": "block",
+            "type": "pass"
+          },
+          {
+            "kind": "block",
+            "type": "goal_behind"
+          },          
+          {
+            "kind": "block",
+            "type": "on_bench"
+          },
+          {
+            "kind": "block",
+            "type": "goal_ahead"
+          }        
+        ]
+    }
+  }
+  

@@ -1,0 +1,133 @@
+{
+    "blocks": [
+      {
+        "type": "answer_incorrect",
+        "message0": "My answer is incorrect",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "answer_first",
+        "message0": "I answer first",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "answer_correct",
+        "message0": "My answer is correct",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "answer_last",
+        "message0": "I answer last",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },                  
+      {
+        "type": "correct",
+        "message0": "Say 'Correct!'",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },
+      {
+        "type": "incorrect",
+        "message0": "Say 'Incorrect!'",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      }      
+    ],
+    "generators": [
+      {
+        "type": "answer_incorrect",
+        "code": "test(input, 0)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "answer_first",
+        "code": "false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "answer_last",
+        "code": "false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },    
+      {
+        "type": "answer_correct",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },         
+      {
+        "type": "incorrect",
+        "code": "result = action(0);\n",
+        "isExpression": false
+      },        
+      {
+        "type": "correct",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      }
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100,
+              "extraState" : {
+                "hasElse": true
+              }
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "correct"
+          },
+          {
+            "kind": "block",
+            "type": "incorrect"
+          },
+          {
+            "kind": "block",
+            "type": "answer_incorrect"
+          },          
+          {
+            "kind": "block",
+            "type": "answer_first"
+          },
+          {
+            "kind": "block",
+            "type": "answer_correct"
+          },
+          {
+            "kind": "block",
+            "type": "answer_last"
+          }       
+        ]
+    }
+  }
+  
