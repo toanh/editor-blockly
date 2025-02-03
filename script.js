@@ -1,3 +1,6 @@
+onLoadBlocks = function() {}
+
+
 // Wait for the DOM content to be loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Load the unified data file (data.json)
@@ -91,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Attach checkBlocks to the Run button.
         //document.getElementById("runButton").addEventListener("click", checkBlocks);
         document.getElementById("runButton").addEventListener("click", runCode);
+
+
+        onLoadBlocks();
       })
       .catch(function(error) {
         console.error("Error loading data.json:", error);

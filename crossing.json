@@ -1,0 +1,96 @@
+{
+    "blocks": [
+      {
+        "type": "no_cars",
+        "message0": "no cars on the road",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "cars",
+        "message0": "cars are on the road",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "cross",
+        "message0": "cross the zerbra crossing",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      },           
+      {
+        "type": "dont_cross",
+        "message0": "do not cross",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "helpUrl": ""
+      }  
+    ],
+    "generators": [
+      {
+        "type": "no_cars",
+        "code": "test(input, 0)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "cars",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },        
+      {
+        "type": "cross",
+        "code": "result = action(0);\n",
+        "isExpression": false
+      },        
+      {
+        "type": "dont_cross",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      }
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "no_cars"
+          },
+          {
+            "kind": "block",
+            "type": "cars"
+          },
+          {
+            "kind": "block",
+            "type": "cross"
+          },          
+          {
+            "kind": "block",
+            "type": "dont_cross"
+          }       
+        ]
+    }
+  }
+  

@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js?t=2" defer></script>
+    <script src="script.js?t=2"></script>
   </head>
   <body>
     
@@ -62,7 +62,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     var activity = urlParams.get('activity');    
     if (activity === null) {
-        activity = "1";
+        activity = "winner";
     }
     loadScript(activity + ".js?t=4")
         .then( data  => {
