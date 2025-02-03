@@ -28,8 +28,8 @@
     <!-- End Google Tag Manager -->    
     <link rel="stylesheet" href="styles.css?t=1">
     <!-- Include the Blockly library from a CDN -->
-    <script src="https://unpkg.com/blockly/blockly.min.js"></script>
-    <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
+    <script src="blockly/blockly.min.js"></script>
+    <script src="blockly/javascript_compressed.js"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
     <script src="script.js?t=3"></script>
@@ -87,7 +87,7 @@
     if (activity === null) {
         activity = "winner";
     }
-    loadScript(activity + ".js?t=4")
+    loadScript(activity + "/blocks.js?t=4")
         .then( data  => {
             console.log("Script loaded successfully", data);
         })

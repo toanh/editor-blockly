@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         activity = "winner";
     }
 
-    fetch(activity + '.json')
+    fetch(activity + '/blocks.json')
       .then(response => response.json())
       .then(function(data) {
         // Extract arrays from the data file.
