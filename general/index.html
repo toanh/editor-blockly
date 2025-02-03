@@ -9,38 +9,43 @@
     <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js" defer></script>
-    <script src="evaluators.js" defer></script>
+    <script src="script.js?t=1" defer></script>
+    <script src="evaluators.js?t=3" defer></script>
   </head>
   <body>
-    <!-- Run button -->
-    <button id="runButton">Run</button>
-    <!-- Container for the workspace and dialog -->
-    <div id="workspaceContainer">
-      <!-- Blockly workspace -->
-      <div id="blocklyDiv"></div>
-      <!-- Custom result dialog with OK button (hidden by default) -->
-      <div id="resultDialog">
-        <!-- Row container: icon on the left and message on the right -->
-        <div class="resultContent">
-          <div class="icon"></div>
-          <div class="msg"></div>
+    
+    <div id="blocklySpace">
+        <h2>Check Your Understanding with Blockly</h2>
+        <!-- Container for the workspace and dialog -->
+        <div id="workspaceContainer">
+        <!-- Blockly workspace -->
+        <div id="blocklyDiv"></div>
+        <!-- Custom result dialog with OK button (hidden by default) -->
+        <div id="resultDialog">
+            <!-- Row container: icon on the left and message on the right -->
+            <div class="resultContent">
+            <div class="icon"></div>
+            <div class="msg"></div>
+            </div>
+            <button id="okButton">OK</button>
         </div>
-        <button id="okButton">OK</button>
-      </div>
-    </div>
+        </div>
+        <!-- Run button -->
+        <button id="runButton">▶ Run</button>
 
-    <!-- Toolbox XML with our custom blocks -->
-    <xml id="toolbox" style="display: none">
-      <!-- Use the built-in if block -->
-      <block type="controls_if"></block>
-      <!-- Custom condition blocks -->
-      <block type="condition_my_score"></block>
-      <block type="condition_your_score"></block>
-      <!-- Custom action blocks -->
-      <block type="action_say_i_won"></block>
-      <block type="action_say_you_won"></block>
-      <block type="action_say_draw"></block>
-    </xml>
+
+        <!-- Toolbox XML with our custom blocks -->
+        <xml id="toolbox" style="display: none">
+        <!-- Use the built-in if block -->
+        <block type="controls_if"></block>
+        <!-- Custom condition blocks -->
+        <block type="condition_my_score"></block>
+        <block type="condition_your_score"></block>
+        <!-- Custom action blocks -->
+        <block type="action_say_i_won"></block>
+        <block type="action_say_you_won"></block>
+        <block type="action_say_draw"></block>
+        </xml>
+    </div>
   </body>
 </html>

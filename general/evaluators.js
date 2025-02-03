@@ -38,7 +38,7 @@ function initWorkspace(workspace) {
               x: 100,
               y: 100,
               extraState : {
-                elseifcount: 1,
+                elseIfCount: 1,
                 hasElse: true
               }
             },

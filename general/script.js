@@ -96,7 +96,11 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
               var testResult = true;
               eval(code);
-              alert(testResult);
+              if (testResult) {
+                showResult("Correct! Well done!", "correct");
+              } else {
+                showResult("Not quite, try again!", "incorrect");
+              }
             } catch (e) {
               alert(e);
             }
