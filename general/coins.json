@@ -1,0 +1,121 @@
+{
+    "blocks": [
+      {
+        "type": "condition_flip_the_coin",
+        "message0": "Flip the coin",
+        "output": "Boolean",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "condition_coin_lands_tails",
+        "message0": "Coin lands tails",
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Returns true if the coin lands tails.",
+        "helpUrl": ""
+      },
+      {
+        "type": "condition_coin_lands_heads",
+        "message0": "Coin lands heads",
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Returns true if the coin lands heads.",
+        "helpUrl": ""
+      },
+      {
+        "type": "action_say_heads",
+        "message0": "say \"Heads!\"",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Says heads!.",
+        "helpUrl": ""
+      },
+      {
+        "type": "action_say_tails",
+        "message0": "say \"Tails!\"",
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Says tails.",
+        "helpUrl": ""
+      }
+    ],
+    "generators": [
+      {
+        "type": "condition_flip_the_coin",
+        "code": "false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "condition_coin_lands_tails",
+        "code": "test(input, 1)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "condition_coin_lands_heads",
+        "code": "test(input, 2)",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },    
+      {
+        "type": "action_say_tails",
+        "code": "result = action(1);\n",
+        "isExpression": false
+      },        
+      {
+        "type": "action_say_heads",
+        "code": "result = action(2);\n",
+        "isExpression": false
+      }
+
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100,
+              "extraState" : {
+                "hasElse": true
+              }
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "condition_flip_the_coin"
+          },
+          {
+            "kind": "block",
+            "type": "condition_coin_lands_tails"
+          },
+          {
+            "kind": "block",
+            "type": "condition_coin_lands_heads"
+          },
+          {
+            "kind": "block",
+            "type": "action_say_heads"
+          },
+          {
+            "kind": "block",
+            "type": "action_say_tails"
+          }
+        ]
+    }
+  }
+  

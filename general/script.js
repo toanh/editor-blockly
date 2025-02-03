@@ -1,25 +1,32 @@
 // Wait for the DOM content to be loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Load the unified data file (data.json)
-    fetch('data.json')
+    const urlParams = new URLSearchParams(window.location.search);
+    var activity = urlParams.get('activity');    
+    if (activity === null) {
+        activity = "1";
+    }
+
+    fetch(activity + '.json')
       .then(response => response.json())
       .then(function(data) {
         // Extract arrays from the data file.
         var blockDefs = data.blocks;
-        var checkStrategies = data.checks;
         var generatorDefs = data.generators;
+        var startBlocks = data.startBlocks;
+        var toolboxBlocks = data.toolbox;
   
         // Define blocks from the blocks array.
         Blockly.defineBlocksWithJsonArray(blockDefs);
   
         // Inject Blockly into the page.
         var workspace = Blockly.inject('blocklyDiv', {
-          toolbox: document.getElementById('toolbox'),
-          trashcan: true
+          trashcan: true,
+          toolbox: toolboxBlocks
         });
 
-        // initialise workspace blocks: found in evalutors.js
-        initWorkspace(workspace);
+        // initialise workspace blocks
+        Blockly.serialization.workspaces.load(startBlocks, workspace);
   
         // Register generator functions based on the generator definitions.
         generatorDefs.forEach(function(genDef) {
@@ -32,31 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
               return code;
             }
           };
-        });
-  
-        // Generic function to check if a given block matches a pattern.
-        // The pattern object should have:
-        //  - "type": expected type of the block.
-        //  - "inputs": an object mapping input names to expected block types.
-        function matchesPattern(block, pattern) {
-          if (!block || block.type !== pattern.type) {
-            return false;
-          }
-          if (pattern.inputs) {
-            for (var inputName in pattern.inputs) {
-              var expectedType = pattern.inputs[inputName];
-              var child = block.getInputTargetBlock(inputName);
-              if (!child || child.type !== expectedType) {
-                return false;
-              }
-            }
-          }
-          // Optionally, ensure no extra blocks are attached.
-          if (block.getNextBlock()) {
-            return false;
-          }
-          return true;
-        }
+        });  
   
         // Function to display the result in the custom dialog.
         function showResult(message, type) {
@@ -105,30 +88,6 @@ document.addEventListener('DOMContentLoaded', function() {
               alert(e);
             }
           }        
-  
-        // Data-driven checkBlocks function.
-        function checkBlocks() {
-          var topBlocks = workspace.getTopBlocks(true);
-          if (topBlocks.length !== 1) {
-            showResult("Not quite, try again!", "incorrect");
-            return;
-          }
-          var block = topBlocks[0];
-          var matched = false;
-          // Iterate through each strategy from data.json.
-          for (var i = 0; i < checkStrategies.length; i++) {
-            var strategy = checkStrategies[i];
-            if (matchesPattern(block, strategy.pattern)) {
-              showResult(strategy.result.message, strategy.result.type);
-              matched = true;
-              break;
-            }
-          }
-          if (!matched) {
-            showResult("Not quite, try again!", "incorrect");
-          }
-        }
-  
         // Attach checkBlocks to the Run button.
         //document.getElementById("runButton").addEventListener("click", checkBlocks);
         document.getElementById("runButton").addEventListener("click", runCode);

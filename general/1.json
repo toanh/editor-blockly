@@ -44,24 +44,6 @@
         "helpUrl": ""
       }
     ],
-    "checks": [
-      {
-        "pattern": {
-          "type": "controls_if",
-          "inputs": {
-            "IF0": "condition_my_score",
-            "DO0": "action_say_i_won",
-            "IF1": "condition_your_score",
-            "DO1": "action_say_you_won",
-            "ELSE": "action_say_draw"
-          }
-        },
-        "result": {
-          "message": "Correct",
-          "type": "correct"
-        }
-      }
-    ],
     "generators": [
       {
         "type": "condition_my_score",
@@ -90,6 +72,50 @@
         "code": "result = action(2);\n",
         "isExpression": false
       }
-    ]
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100,
+              "extraState" : {
+                "elseIfCount": 1,
+                "hasElse": true
+              }
+            }
+          ]
+        }
+      } ,
+    "toolbox" : {
+      "kind": "flyoutToolbox",
+      "contents": [
+        {
+          "kind": "block",
+          "type": "controls_if"
+        },
+        {
+          "kind": "block",
+          "type": "condition_my_score"
+        },
+        {
+          "kind": "block",
+          "type": "condition_your_score"
+        },
+        {
+          "kind": "block",
+          "type": "action_say_i_won"
+        },
+        {
+          "kind": "block",
+          "type": "action_say_you_won"
+        },
+        {
+          "kind": "block",
+          "type": "action_say_draw"
+        }
+      ]
+    } 
   }
-  

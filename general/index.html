@@ -3,14 +3,13 @@
   <head>
     <meta charset="utf-8">
     <title>Score Checker with Data-Driven Blockly</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?t=1">
     <!-- Include the Blockly library from a CDN -->
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="https://unpkg.com/blockly/javascript_compressed"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js?t=1" defer></script>
-    <script src="evaluators.js?t=3" defer></script>
+    <script src="script.js?t=2" defer></script>
   </head>
   <body>
     
@@ -34,18 +33,58 @@
         <button id="runButton">▶ Run</button>
 
 
-        <!-- Toolbox XML with our custom blocks -->
+
+        <!--
         <xml id="toolbox" style="display: none">
-        <!-- Use the built-in if block -->
+        
         <block type="controls_if"></block>
-        <!-- Custom condition blocks -->
+        
         <block type="condition_my_score"></block>
         <block type="condition_your_score"></block>
-        <!-- Custom action blocks -->
+        
         <block type="action_say_i_won"></block>
         <block type="action_say_you_won"></block>
         <block type="action_say_draw"></block>
-        </xml>
+        </xml>-->
     </div>
   </body>
+  <script>
+    const loadScript = (FILE_URL, async = true, type = "text/javascript") => {
+        return new Promise((resolve, reject) => {
+            try {
+                const scriptEle = document.createElement("script");
+                scriptEle.type = type;
+                scriptEle.async = async;
+                scriptEle.src =FILE_URL;
+
+                scriptEle.addEventListener("load", (ev) => {
+                    resolve({ status: true });
+                });
+
+                scriptEle.addEventListener("error", (ev) => {
+                    reject({
+                        status: false,
+                        message: `Failed to load the script ${FILE_URL}`
+                    });
+                });
+
+                document.body.appendChild(scriptEle);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
+    const urlParams = new URLSearchParams(window.location.search);
+    var activity = urlParams.get('activity');    
+    if (activity === null) {
+        activity = "1";
+    }
+    loadScript(activity + ".js?t=4")
+        .then( data  => {
+            console.log("Script loaded successfully", data);
+        })
+        .catch( err => {
+            console.error(err);
+        });        
+</script>  
 </html>
