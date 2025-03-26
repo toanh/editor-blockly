@@ -1,0 +1,111 @@
+{
+    "blocks": [
+      {
+        "type": "print_text",
+        "message0": "print %1",
+        "args0": [
+          {
+            "type": "input_value",
+            "name": "TEXT",
+            "check": "String"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 160,
+        "tooltip": "Print the specified text",
+        "helpUrl": ""
+      },      
+      {
+        "type": "condition_answer_is_no",
+        "message0": "Answer is No",
+        "output": "Boolean",
+        "tooltip": "Returns true if the user clicked 'no'.",
+        "colour": 210,
+        "helpUrl": ""
+      },
+      {
+        "type": "condition_answer_is_yes",
+        "message0": "Answer is Yes",
+        "output": "Boolean",
+        "colour": 210,
+        "tooltip": "Returns true if the user clicked 'yes'.",
+        "helpUrl": ""
+      },
+      {
+        "type": "ask_yes_no",
+        "message0": "Ask Yes or No %1",
+        "args0": [
+          {
+            "type": "input_value",
+            "name": "TEXT",
+            "check": "String"
+          }
+        ],
+        "previousStatement": null,
+        "nextStatement": null,
+        "colour": 120,
+        "tooltip": "Ask a Yes or No Question.",
+        "helpUrl": ""
+      }      
+    ],
+    "generators": [
+      {
+        "type": "condition_answer_is_no",
+        "code": "result === false",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      },
+      {
+        "type": "condition_answer_is_yes",
+        "code": "result === true",
+        "order": "ORDER_NONE",
+        "isExpression": true
+      }
+    ],
+    "startBlocks" : {
+        "blocks": {
+          "blocks": [
+            {
+              "kind": "block",
+              "type": "controls_if",
+              "x": 100,
+              "y": 100,
+              "extraState" : {
+                "hasElse": true
+              }
+            }
+          ]
+        }
+      },
+      "toolbox" : {
+        "kind": "flyoutToolbox",
+        "contents": [
+          {
+            "kind": "block",
+            "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "condition_answer_is_no"
+          },
+          {
+            "kind": "block",
+            "type": "condition_answer_is_yes"
+          },
+          {
+            "kind": "block",
+            "type": "ask_yes_no"
+          },
+          {
+            "kind": "block",
+            "type": "print_text"
+          },
+          {
+            "kind": "block",
+            "type": "text"
+          }          
+        ]
+    }
+  }
+  

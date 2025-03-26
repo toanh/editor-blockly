@@ -32,7 +32,7 @@
     <script src="blockly/javascript_compressed.js"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js?t=3"></script>
+    <script src="script.js?t=4"></script>
   </head>
   <body>
     
@@ -54,6 +54,15 @@
         </div>   
         <button id="runButton">▶ Run</button>
     </div>   
+
+    <dialog>       
+        <button id="closeBtn" class="close-button">X</button>        
+        <div id="dialog-text"></div>
+        <div id="dialog-buttons">
+            <button id="dialog-yes-button">Yes</button>
+            <button id="dialog-no-button">No</button>
+        </div>
+    </dialog>
 
   </body>
   <script>
@@ -85,7 +94,8 @@
     const urlParams = new URLSearchParams(window.location.search);
     var activity = urlParams.get('activity');    
     if (activity === null) {
-        activity = "winner";
+        //activity = "winner";
+        activity = "classify";
     }
     loadScript(activity + "/blocks.js?t=4")
         .then( data  => {

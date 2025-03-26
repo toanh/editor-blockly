@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     var activity = urlParams.get('activity');    
     if (activity === null) {
-        activity = "winner";
+        activity = "classify";
     }
 
-    fetch(activity + '/blocks.json')
+    fetch(activity + '/blocks.json?t=1')
       .then(response => response.json())
       .then(function(data) {
         // Extract arrays from the data file.
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // initialise workspace blocks
-        Blockly.serialization.workspaces.load(startBlocks, workspace);
+        Blockly.serialization.workspaces.load(startBlocks, workspace);  
   
         // Register generator functions based on the generator definitions.
         generatorDefs.forEach(function(genDef) {
@@ -67,11 +67,13 @@ document.addEventListener('DOMContentLoaded', function() {
           document.getElementById("resultDialog").style.display = "none";
         });
 
-        function runCode() {
+        async function runCode() {
             // Generate JavaScript code and run it.
             window.LoopTrap = 1000;
             javascript.javascriptGenerator.INFINITE_LOOP_TRAP =
               'if (--window.LoopTrap < 0) throw "Infinite loop.";\n';
+ 
+
             var code =
               javascript.javascriptGenerator.workspaceToCode(workspace);
             javascript.javascriptGenerator.INFINITE_LOOP_TRAP = null;
@@ -82,10 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
               var testResult = true;
               eval(code);
-              if (testResult) {
+              if (testResult === true) {
                 showResult("Correct! Well done!", "correct");
-              } else {
+              } else if (testResult === false) {
                 showResult("Not quite, try again!", "incorrect");
+              } else {
+                // not a boolean type assigned to testResult (async result is pending), just do nothing
               }
             } catch (e) {
               alert(e);

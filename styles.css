@@ -95,3 +95,12 @@ html, body {
     align-self: center;
   }
   
+  .close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
