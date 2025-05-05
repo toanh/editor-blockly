@@ -47,6 +47,8 @@ function print(text) {
     // always hide buttons after a print
     setDialogButtonVisible(false);
     dialog.show();
+    //dialog.style.left = '100px';
+    //dialog.style.top = '100px';    
 }
 
 function input(options) {
@@ -55,7 +57,7 @@ function input(options) {
 
 // setting up custom generator function for the print_text block due to it using a parameter
 Blockly.JavaScript.forBlock['print_text'] = function(block) {
-    var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '""';
+    var text = JSON.stringify(block.getFieldValue('TEXT') || "");
     var code = 'print(' + text + ');\n';
     return code;
 };   
@@ -66,7 +68,8 @@ Blockly.JavaScript.forBlock['print_text'] = function(block) {
         "isExpression": false
       }*/
 Blockly.JavaScript.forBlock['ask_yes_no'] = function(block) {
-    var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '""';
+    //var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '""';
+    var text = JSON.stringify(block.getFieldValue('TEXT') || "");
     var code = 'print(' + text + ');\nresult = await yesOrNo();\n';
     return code;
 };   

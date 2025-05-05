@@ -41,7 +41,7 @@
         <!-- Container for the workspace and dialog -->
         <div id="workspaceContainer">
             <!-- Blockly workspace -->
-            <div id="blocklyDiv"></div>
+            <div id="blocklyDiv" style="width: 800px; height: 600px;"></div>
             <!-- Custom result dialog with OK button (hidden by default) -->
             <div id="resultDialog">
                 <!-- Row container: icon on the left and message on the right -->
@@ -54,13 +54,20 @@
         </div>   
         <button id="runButton">▶ Run</button>
     </div>   
-
-    <dialog>       
-        <button id="closeBtn" class="close-button">X</button>        
-        <div id="dialog-text"></div>
-        <div id="dialog-buttons">
-            <button id="dialog-yes-button">Yes</button>
-            <button id="dialog-no-button">No</button>
+   
+    <dialog id="myDialog">      
+        <div id="dialog-header">
+            <div class="dialog-header-text">
+                OUTPUT
+            </div>
+            <button id="closeBtn" class="close-button">x</button>        
+        </div>        
+        <div class="dialog-contents">
+            <div id="dialog-text"></div>
+            <div id="dialog-buttons">
+                <button id="dialog-yes-button">Yes</button>
+                <button id="dialog-no-button">No</button>
+            </div>
         </div>
     </dialog>
 
@@ -104,5 +111,36 @@
         .catch( err => {
             console.error(err);
         });        
+
+
+    const myDialog = document.getElementById('myDialog');
+    const header = document.getElementById('dialog-header');
+
+    let offsetX = 0, offsetY = 0, isDragging = false;
+
+    
+
+    header.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      // Calculate offset between mouse and dialog top-left
+      const rect = myDialog.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      // Set dialog to absolute so it can be moved
+      myDialog.style.position = 'fixed';
+      myDialog.style.margin = '0'; // Remove default centering
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (isDragging) {
+        myDialog.style.left = (e.clientX - offsetX) + 'px';
+        myDialog.style.top = (e.clientY - offsetY) + 'px';
+      }
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+    });
+    
 </script>  
 </html>

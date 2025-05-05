@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Inject Blockly into the page.
         var workspace = Blockly.inject('blocklyDiv', {
           trashcan: true,
-          toolbox: toolboxBlocks
+          toolbox: toolboxBlocks,
+          scrollbars: true
         });
 
         // initialise workspace blocks

@@ -1,3 +1,4 @@
+
 /* Basic page styling */
 html, body {
     height: 100%;
@@ -36,9 +37,18 @@ html, body {
     height: 100%;
   }
 
+  /* Container for the icon and message in the dialog (row layout) */
+  .resultContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }  
+
   /* Position the Run button at the top left */
   #runButton {
-    z-index: 1000;
+    z-index: 500;
     margin: 10px;
     padding: 8px 16px;
     font-size: 16px;
@@ -65,15 +75,7 @@ html, body {
     align-items: center;
   }
   
-  /* Container for the icon and message in the dialog (row layout) */
-  .resultContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-  
+    
   /* Icon styling */
   #resultDialog .icon {
     font-size: 48px;
@@ -97,10 +99,52 @@ html, body {
   
   .close-button {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -2px;
+    right: 0px;
     background: transparent;
     border: none;
     font-size: 16px;
     cursor: pointer;
+    color: #f00;
+    padding-right: 2px;
   }
+
+  #myDialog {
+    padding: 0px;
+    margin: 0px;
+    z-index: 100;
+  }
+
+  
+  #myDialog[open] {
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    /*transform: translate(-50%, -50%);*/
+    margin: 0; 
+  }
+    
+
+  #dialog-header {
+    cursor: move; 
+    background: #eee;  
+    z-index: 9999;
+  } 
+
+  .dialog-header-text {
+    padding-top: 4px;
+    text-align: center;
+    color: #444;
+    font-size: 12px;
+    user-select: none;
+  }
+
+  .dialog-contents {
+    padding: 8px;
+    text-align: center;
+    font-size: 16px;
+  }  
+
+  #dialog-buttons {
+    padding-bottom: 12px;
+  }    
