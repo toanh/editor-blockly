@@ -112,23 +112,14 @@ html, body {
   #myDialog {
     padding: 0px;
     margin: 0px;
-    z-index: 100;
-  }
-
-  
-  #myDialog[open] {
-    position: absolute;
-    left: 50%;
-    top: 25%;
-    /*transform: translate(-50%, -50%);*/
-    margin: 0; 
-  }
-    
+    z-index: 2000;
+    min-width: 300px;   /* Minimum width */
+    min-height: 150px;  /* Minimum height */    
+  }   
 
   #dialog-header {
     cursor: move; 
     background: #eee;  
-    z-index: 9999;
   } 
 
   .dialog-header-text {

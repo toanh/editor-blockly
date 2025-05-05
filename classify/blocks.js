@@ -38,18 +38,30 @@ function setDialogButtonVisible(visible = true) {
     dialogButtons.style.display = visible ? "block" : "none";
 }
 
-function print(text) {
+function print(text, colour = "black") {
     const dialogText = document.getElementById("dialog-text");
     let paragraph = document.createElement("p");
+    paragraph.style.color = colour;
     paragraph.textContent = text;
     dialogText.append(paragraph);
 
     // always hide buttons after a print
     setDialogButtonVisible(false);
-    dialog.show();
+    showAndCenterDialog(dialog);
     //dialog.style.left = '100px';
     //dialog.style.top = '100px';    
 }
+
+function showAndCenterDialog(dialog) {
+    if (!dialog.visible) {
+        dialog.show();
+        dialog.style.visibility = 'hidden';
+        dialog.style.left = `calc(50% - ${dialog.offsetWidth / 2}px)`;
+        dialog.style.top = `25%`;
+        dialog.style.visibility = 'visible';
+        
+    }
+  }
 
 function input(options) {
 
@@ -61,16 +73,11 @@ Blockly.JavaScript.forBlock['print_text'] = function(block) {
     var code = 'print(' + text + ');\n';
     return code;
 };   
-/*
-      {
-        "type": "ask_yes_no",
-        "code": "result = await yesOrNo();\n",
-        "isExpression": false
-      }*/
+
 Blockly.JavaScript.forBlock['ask_yes_no'] = function(block) {
     //var text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.JavaScript.ORDER_NONE) || '""';
     var text = JSON.stringify(block.getFieldValue('TEXT') || "");
-    var code = 'print(' + text + ');\nresult = await yesOrNo();\n';
+    var code = 'print(' + text + ', \'blue\');\nresult = await yesOrNo();\n';
     return code;
 };   
 
@@ -84,7 +91,8 @@ closeBtn.addEventListener("click", () => {
 
 function waitForDialogResponse() {
     return new Promise((resolve) => {
-        dialog.show();
+        showAndCenterDialog(dialog);
+        //dialog.show();
         const yesButton = document.getElementById("dialog-yes-button");
         const noButton = document.getElementById("dialog-no-button");
 
