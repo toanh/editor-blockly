@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
               const snapshotUrl = new URL(window.location.href);
               snapshotUrl.searchParams.set('id', id);
 
-              showResult(`Snapshot saved! <a href="${snapshotUrl.href}" target="_blank" style="color: #007bff; text-decoration: underline;">Click here to view</a>`, "correct");              
+              showResult(`Snapshot to:<br> <a href="${snapshotUrl.href}" target="_blank" style="color: #007bff; text-decoration: underline;">${snapshotUrl.href}</a>`, "correct");              
               
           } catch (error) {
               console.error('Error saving snapshot:', error);
