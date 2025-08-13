@@ -32,7 +32,7 @@
     <script src="blockly/javascript_compressed.js"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js?t=5"></script>
+    <script src="script.js?t=6"></script>
   </head>
   <body>
     
@@ -52,7 +52,11 @@
                 <button id="okButton">OK</button>
             </div>
         </div>   
-        <button id="runButton">▶ Run</button>
+
+        <div class="button-container">
+            <button id="runButton">▶ Run</button>
+            <button id="snapshotButton">🔗 Snapshot to URL</button>
+        </div>        
     </div>   
    
     <dialog id="myDialog">      
@@ -104,7 +108,7 @@
         //activity = "winner";
         activity = "classify";
     }
-    loadScript(activity + "/blocks.js?t=5")
+    loadScript(activity + "/blocks.js?t=6")
         .then( data  => {
             console.log("Script loaded successfully", data);
         })

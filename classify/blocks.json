@@ -39,7 +39,7 @@
           {
             "type": "field_input",
             "name": "TEXT",
-            "text": "Do I have 4 legs?"
+            "text": "Does it have 4 legs?"
           }
         ],
         "previousStatement": null,

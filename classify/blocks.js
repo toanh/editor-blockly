@@ -28,16 +28,6 @@ function constructTests(code) {
     return execCode;
 }
 
-function clearDialogText() {
-    const dialogText = document.getElementById("dialog-text");
-    dialogText.innerHTML = "";
-}
-
-function setDialogButtonVisible(visible = true) {    
-    const dialogButtons = document.getElementById("dialog-buttons");    
-    dialogButtons.style.display = visible ? "block" : "none";
-}
-
 function print(text, colour = "black") {
     const dialogText = document.getElementById("dialog-text");
     let paragraph = document.createElement("p");
@@ -51,17 +41,6 @@ function print(text, colour = "black") {
     //dialog.style.left = '100px';
     //dialog.style.top = '100px';    
 }
-
-function showAndCenterDialog(dialog) {
-    if (!dialog.visible) {
-        dialog.show();
-        dialog.style.visibility = 'hidden';
-        dialog.style.left = `calc(50% - ${dialog.offsetWidth / 2}px)`;
-        dialog.style.top = `25%`;
-        dialog.style.visibility = 'visible';
-        
-    }
-  }
 
 function input(options) {
 

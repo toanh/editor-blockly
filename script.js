@@ -1,5 +1,25 @@
 onLoadBlocks = function() {}
 
+function clearDialogText() {
+  const dialogText = document.getElementById("dialog-text");
+  dialogText.innerHTML = "";
+}
+
+function setDialogButtonVisible(visible = true) {    
+  const dialogButtons = document.getElementById("dialog-buttons");    
+  dialogButtons.style.display = visible ? "block" : "none";
+}    
+
+function showAndCenterDialog(dialog) {
+  if (!dialog.visible) {
+      dialog.show();
+      dialog.style.visibility = 'hidden';
+      dialog.style.left = `calc(50% - ${dialog.offsetWidth / 2}px)`;
+      dialog.style.top = `25%`;
+      dialog.style.visibility = 'visible';
+      
+  }
+}    
 
 // Wait for the DOM content to be loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -29,8 +49,101 @@ document.addEventListener('DOMContentLoaded', function() {
           scrollbars: true
         });
 
-        // initialise workspace blocks
-        Blockly.serialization.workspaces.load(startBlocks, workspace);  
+        // Check for id parameter and restore workspace if it exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const idParam = urlParams.get('id');
+        
+        if (idParam) {
+            // Show spinner while fetching
+            const spinner = document.createElement('div');
+            spinner.id = 'loadingSpinner';
+            spinner.innerHTML = `
+                <div style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    <div style="
+                        width: 20px;
+                        height: 20px;
+                        border: 2px solid #f3f3f3;
+                        border-top: 2px solid #3498db;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                    "></div>
+                    <span>Loading workspace...</span>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+            
+            // Append spinner to the Blockly workspace div instead of body
+            const blocklyDiv = document.getElementById('blocklyDiv');
+            blocklyDiv.style.position = 'relative'; // Ensure positioning context
+            blocklyDiv.appendChild(spinner);
+            
+            // Fetch the saved workspace from the API
+            fetch(`https://codestore-348206.ts.r.appspot.com/get?id=${encodeURIComponent(idParam)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json(); // Parse as JSON instead of text
+                })
+                .then(workspaceJson => {
+                    try {
+                        // Clear existing workspace
+                        workspace.clear();
+                        
+                        // Load the JSON workspace directly 
+                        Blockly.serialization.workspaces.load(workspaceJson, workspace);
+                        
+                        // Remove the id parameter from the URL
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.delete('id');
+                        window.history.replaceState({}, '', currentUrl);
+                        
+                        console.log('Workspace restored from snapshot');
+                    } catch (error) {
+                        console.error('Error restoring workspace:', error);
+                        // If restoration fails, continue with default blocks
+                        Blockly.serialization.workspaces.load(startBlocks, workspace);
+                    } finally {
+                        // Always remove spinner when done
+                        const spinner = document.getElementById('loadingSpinner');
+                        if (spinner) {
+                            spinner.remove();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching snapshot:', error);
+                    // If fetching fails, continue with default blocks
+                    Blockly.serialization.workspaces.load(startBlocks, workspace);
+                    
+                    // Remove spinner on error too
+                    const spinner = document.getElementById('loadingSpinner');
+                    if (spinner) {
+                        spinner.remove();
+                    }
+                });
+        } else {
+            // No id parameter, load default start blocks
+            Blockly.serialization.workspaces.load(startBlocks, workspace);
+        }    
   
         // Register generator functions based on the generator definitions.
         generatorDefs.forEach(function(genDef) {
@@ -59,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             iconDiv.innerHTML = "&#x2716;";  // Unicode heavy ballot X.
             iconDiv.style.color = "red";
           }
-          msgDiv.textContent = message;
+          msgDiv.innerHTML = message;
           dialog.style.display = "flex";
         }
   
@@ -69,6 +182,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         async function runCode() {
+            // clear the dialog if present
+            setDialogButtonVisible(false);
+            clearDialogText();            
+
+
             // Generate JavaScript code and run it.
             window.LoopTrap = 1000;
             javascript.javascriptGenerator.INFINITE_LOOP_TRAP =
@@ -100,6 +218,37 @@ document.addEventListener('DOMContentLoaded', function() {
         //document.getElementById("runButton").addEventListener("click", checkBlocks);
         document.getElementById("runButton").addEventListener("click", runCode);
 
+        // Add Snapshot to URL button functionality
+        document.getElementById("snapshotButton").addEventListener("click", async function() {
+          try {
+              // Get the workspace blocks as JSON
+              const workspaceJson = Blockly.serialization.workspaces.save(workspace);
+              
+              // Make POST request to the endpoint
+              const response = await fetch('https://codestore-348206.ts.r.appspot.com/put', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/x-www-form-urlencoded', // Changed to JSON content type
+                  },
+                  body: 'code=' + encodeURIComponent(JSON.stringify(workspaceJson))                  
+              });
+              
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              
+              const id = await response.text();
+              
+              // Display success message with clickable URL
+              const snapshotUrl = new URL(window.location.href);
+              snapshotUrl.searchParams.set('id', id);
+
+              showResult(`Snapshot saved! <a href="${snapshotUrl.href}" target="_blank" style="color: #007bff; text-decoration: underline;">Click here to view</a>`, "correct");              
+              
+          } catch (error) {
+              console.error('Error saving snapshot:', error);
+              showResult('Error saving snapshot: ' + error.message, "incorrect");
+        }});  
 
         onLoadBlocks();
       })
