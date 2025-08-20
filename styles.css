@@ -19,7 +19,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     width: 800px;
-}
+  }
   
   
   /* Container for the workspace and dialog */
@@ -148,6 +148,7 @@ html, body {
     z-index: 2000;
     min-width: 300px;   /* Minimum width */
     min-height: 150px;  /* Minimum height */    
+    font-size: larger;
   }   
 
   #dialog-header {
@@ -170,5 +171,21 @@ html, body {
   }  
 
   #dialog-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
     padding-bottom: 12px;
   }    
+
+  #dialog-text {
+    font-size: 24px;
+  }     
+
+  #dialog-yes-button {
+    font-size: 24px;
+  }
+
+  #dialog-no-button {
+    font-size: 24px;
+  }

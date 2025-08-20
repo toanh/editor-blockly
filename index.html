@@ -26,13 +26,13 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-T56KV4L');</script>
     <!-- End Google Tag Manager -->    
-    <link rel="stylesheet" href="styles.css?t=2">
+    <link rel="stylesheet" href="styles.css?t=5">
     <!-- Include the Blockly library from a CDN -->
     <script src="blockly/blockly.min.js"></script>
     <script src="blockly/javascript_compressed.js"> const jsCode = javascript.javascriptGenerator.workspaceToCode(workspace);</script>    
     
     <!-- Main script -->
-    <script src="script.js?t=6"></script>
+    <script src="script.js?t=7"></script>
   </head>
   <body>
     
@@ -69,8 +69,8 @@
         <div class="dialog-contents">
             <div id="dialog-text"></div>
             <div id="dialog-buttons">
-                <button id="dialog-yes-button">Yes</button>
-                <button id="dialog-no-button">No</button>
+                <button id="dialog-yes-button"><span style="color:green">&#x2714;</span> Yes</button>
+                <button id="dialog-no-button"><span style="color:red">&#x2714;</span> No</button>
             </div>
         </div>
     </dialog>
@@ -108,7 +108,7 @@
         //activity = "winner";
         activity = "classify";
     }
-    loadScript(activity + "/blocks.js?t=6")
+    loadScript(activity + "/blocks.js?t=7")
         .then( data  => {
             console.log("Script loaded successfully", data);
         })

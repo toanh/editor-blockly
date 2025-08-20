@@ -7,15 +7,23 @@ function clearDialogText() {
 
 function setDialogButtonVisible(visible = true) {    
   const dialogButtons = document.getElementById("dialog-buttons");    
-  dialogButtons.style.display = visible ? "block" : "none";
+  dialogButtons.style.display = visible ? "flex" : "none";
 }    
 
 function showAndCenterDialog(dialog) {
-  if (!dialog.visible) {
+  const container = document.getElementById('workspaceContainer');
+  if (!dialog.open && container) {
       dialog.show();
       dialog.style.visibility = 'hidden';
-      dialog.style.left = `calc(50% - ${dialog.offsetWidth / 2}px)`;
-      dialog.style.top = `25%`;
+      dialog.style.position = 'fixed';
+      dialog.style.margin = '0';
+
+      const containerRect = container.getBoundingClientRect();
+      const left = containerRect.left + (containerRect.width - dialog.offsetWidth) / 2;
+      const top = containerRect.top + (containerRect.height - dialog.offsetHeight) / 2;
+
+      dialog.style.left = `${left}px`;
+      dialog.style.top = `${top}px`;
       dialog.style.visibility = 'visible';
       
   }
