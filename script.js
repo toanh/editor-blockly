@@ -33,6 +33,7 @@ function showAndCenterDialog(dialog) {
 document.addEventListener('DOMContentLoaded', function() {
     // Load the unified data file (data.json)
     const urlParams = new URLSearchParams(window.location.search);
+    var snapshotUrl;
     var activity = urlParams.get('activity');    
     if (activity === null) {
         activity = "classify";
@@ -186,8 +187,21 @@ document.addEventListener('DOMContentLoaded', function() {
   
         // Dismiss the dialog when the OK button is clicked.
         document.getElementById("okButton").addEventListener("click", function() {
+          document.getElementById("copyToClip").style.display = "none";
           document.getElementById("resultDialog").style.display = "none";
         });
+
+        // start by hiding the copy to clipboard button
+        document.getElementById("copyToClip").style.display = "none";
+
+        document.getElementById("copyToClip").addEventListener("click", function() {
+          navigator.clipboard.writeText(snapshotUrl.href);
+          document.getElementById("copyToClip").innerText = "Copied!";
+        
+          setTimeout(function() {
+            document.getElementById("copyToClip").innerText = "Copy URL";
+          }, 3000);          
+        });        
 
         async function runCode() {
             // clear the dialog if present
@@ -248,9 +262,10 @@ document.addEventListener('DOMContentLoaded', function() {
               const id = await response.text();
               
               // Display success message with clickable URL
-              const snapshotUrl = new URL(window.location.href);
+              snapshotUrl = new URL(window.location.href);
               snapshotUrl.searchParams.set('id', id);
 
+              document.getElementById("copyToClip").style.display = "block";
               showResult(`Snapshot to:<br> <a href="${snapshotUrl.href}" target="_blank" style="color: #007bff; text-decoration: underline;">${snapshotUrl.href}</a>`, "correct");              
               
           } catch (error) {
